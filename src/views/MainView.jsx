@@ -3,7 +3,12 @@ import { Layout, Menu, Icon } from 'antd';
 import logo from '../logo.svg';
 import './MainView.css';
 import Header from '../components/header/Header';
-const { Sider } = Layout;
+import { connect } from "react-redux";
+import { Provider } from 'react-keep-alive';
+import { HashRouter as Router, Switch } from 'react-router-dom';
+import RouterView from '../routes';
+
+const { Sider, Content } = Layout;
 
 export default class MainView extends Component {
   constructor(props) {
@@ -45,6 +50,13 @@ export default class MainView extends Component {
               onClick={this.toggle}
             />
           </Header>
+          <Content>
+            <Provider>
+                <Router>
+                  <Switch>{RouterView}</Switch>
+                </Router>
+            </Provider>
+          </Content>
         </Layout>
       </Layout>
     );
