@@ -7,9 +7,6 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import * as serviceWorker from './serviceWorker';
 import { PersistGate } from 'redux-persist/integration/react';
-import { CONFIG } from './config';
-
-window.CONFIG = CONFIG;
 
 ReactDOM.render(
   <Provider store={store}>

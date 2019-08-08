@@ -1,6 +1,9 @@
 import axios from './';
 
-
 function uploadXLSX(params) {
-  return uploadXLSX.post('/input/xlsx2db', params)
+  return axios.post('/input/xlsx2db', params);
 }
+
+export default {
+  uploadXLSX
+};

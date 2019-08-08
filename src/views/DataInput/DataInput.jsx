@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Upload, Icon, message, Steps, Input, Button } from 'antd';
 import moment from 'moment';
+import API from '../../api/service'
+import { CONFIG } from '../../config'
 
 const { Step } = Steps;
 const { Dragger } = Upload;
@@ -86,7 +88,7 @@ export default class DataInput extends Component {
       this.setState({ fileList, batchNum });
       return false;
     },
-    accept: window.CONFIG.FILE_ACCEPT.join(','),
+    accept: CONFIG.FILE_ACCEPT.join(','),
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -108,7 +110,24 @@ export default class DataInput extends Component {
     const current = this.state.current - 1;
     this.setState({ current });
   }
-  submit = () => { };
+  submit = () => {
+    // 验证
+    if (!this.state.batchNum) {
+      message.warn('check your batch number')
+      return
+    }
+    if (!this.state.fileList.length > 0) {
+      message.warn('upload a file')
+    }
+    const formData = new FormData();
+    this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
+      formData.append('files[]', file);
+    });
+    formData.append('batchNum', this.state.batchNum)
+    API.uploadXLSX(formData).then(res => {
+
+    })
+  };
   render() {
     const { current } = this.state;
     const steps = this.steps();
