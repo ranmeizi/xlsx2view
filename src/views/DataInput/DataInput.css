@@ -1,0 +1,18 @@
+.DataInput {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.DataInput-inner {
+  width: 80%;
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.steps-content {
+  height: 40vh;
+  text-align: center
+}

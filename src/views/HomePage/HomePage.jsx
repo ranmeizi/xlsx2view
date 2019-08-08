@@ -1,20 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   componentWillMount() {
-    console.log('我是home，我要mount了')
+    console.log('我是home，我要mount了');
   }
   componentDidMount() {
-    console.log('我是home，我mount了')
+    console.log('我是home，我mount了');
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
   }
   componentWillUnmount() {
-    console.log('不管用啊')
+    console.log('不管用啊');
   }
   render() {
-    return (
-      <div>
-        我是一个主页
-      </div>
-    )
+    return <div>我是一个主页</div>;
   }
 }
+export default withRouter(HomePage);

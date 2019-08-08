@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import logo from '../logo.svg';
-import './MainView.css';
 import Header from '../components/header/Header';
-import { connect } from "react-redux";
-import { Provider } from 'react-keep-alive';
-import { HashRouter as Router, Switch } from 'react-router-dom';
-import RouterView from '../routes';
+import { withRouter } from 'react-router-dom';
+// import { connect } from 'react-redux';
+import { renderRoutes } from 'react-router-config';
 
 const { Sider, Content } = Layout;
 
-export default class MainView extends Component {
+class MainView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       collapsed: false
     };
   }
-
+  menuOnchange = ({ key }) => {
+    this.props.history.push(key);
+  };
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
@@ -31,13 +31,22 @@ export default class MainView extends Component {
             <img src={logo} className="App-logo" alt="" />
             <div className="logo" />
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
-              <Icon type="user" />
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={['/homepage']}
+            onClick={this.menuOnchange}
+          >
+            <Menu.Item key="/homepage">
+              <Icon type="contacts" />
               <span>Homepage</span>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
+            <Menu.Item key="/input">
+              <Icon type="file-excel" />
+              <span>ImportData</span>
+            </Menu.Item>
+            <Menu.Item key="/query">
+              <Icon type="area-chart" />
               <span>QueryData</span>
             </Menu.Item>
           </Menu>
@@ -50,15 +59,10 @@ export default class MainView extends Component {
               onClick={this.toggle}
             />
           </Header>
-          <Content>
-            <Provider>
-                <Router>
-                  <Switch>{RouterView}</Switch>
-                </Router>
-            </Provider>
-          </Content>
+          <Content>{renderRoutes(this.props.route.routes)}</Content>
         </Layout>
       </Layout>
     );
   }
 }
+export default withRouter(MainView);
