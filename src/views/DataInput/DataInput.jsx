@@ -120,10 +120,11 @@ export default class DataInput extends Component {
       message.warn('upload a file')
     }
     const formData = new FormData();
-    this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
-      formData.append('files[]', file);
-    });
     formData.append('batchNum', this.state.batchNum)
+    this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
+      formData.append('files', file);
+    });
+
     API.uploadXLSX(formData).then(res => {
 
     })
