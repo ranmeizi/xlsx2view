@@ -3,11 +3,11 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import appReducer from './app';
-import tabpanesReducer from './tabpanes';
+import tabpanes from './tabpanes';
 
 let rootReducer = combineReducers({
   appReducer,
-  tabpanesReducer
+  tabpanes
 });
 
 export default persistReducer(

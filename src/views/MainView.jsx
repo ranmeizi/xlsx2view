@@ -3,8 +3,10 @@ import { Layout, Menu, Icon } from 'antd';
 import logo from '../logo.svg';
 import Header from '../components/header/Header';
 import { withRouter } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
+import { bindActionCreators } from 'redux'
+import * as tabpanes from '../redux/actions/tabpanes'
 
 const { Sider, Content } = Layout;
 
@@ -15,8 +17,13 @@ class MainView extends Component {
       collapsed: false
     };
   }
-  menuOnchange = ({ key }) => {
-    this.props.history.push(key);
+  menuOnchange = ({ item, key }) => {
+    console.log(item)
+    this.props.addTabList({
+      key: key,
+      title: item.props.name,
+      closable: true
+    })
   };
   toggle = () => {
     this.setState({
@@ -37,15 +44,15 @@ class MainView extends Component {
             defaultSelectedKeys={['/homepage']}
             onClick={this.menuOnchange}
           >
-            <Menu.Item key="/homepage">
+            <Menu.Item key="/homepage" name='Homepage'>
               <Icon type="contacts" />
               <span>Homepage</span>
             </Menu.Item>
-            <Menu.Item key="/input">
+            <Menu.Item key="/input" name='ImportData'>
               <Icon type="file-excel" />
               <span>ImportData</span>
             </Menu.Item>
-            <Menu.Item key="/query">
+            <Menu.Item key="/query" name='QueryData'>
               <Icon type="area-chart" />
               <span>QueryData</span>
             </Menu.Item>
@@ -65,4 +72,11 @@ class MainView extends Component {
     );
   }
 }
-export default withRouter(MainView);
+const mapStateToProps = (state, ownnProps) => ({
+  rdx_menuData: state.tabpanes.menuData,
+  rdx_activeKey: state.tabpanes.activeKey
+})
+const mapDispatchToProps = dispatch => ({
+  addTabList: bindActionCreators(tabpanes.addTabList, dispatch)
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainView));

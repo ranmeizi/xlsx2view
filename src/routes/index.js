@@ -1,8 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import MainView from '../views/MainView';
 import HomePage from '../views/HomePage/HomePage';
 import DataInput from '../views/DataInput/DataInput';
-import { KeepAlive } from 'react-keep-alive';
 
 const routes = [
   {
@@ -11,27 +10,15 @@ const routes = [
     routes: [
       {
         path: '/homepage',
-        component: () => (
-          <KeepAlive name="HomePage">
-            <HomePage />
-          </KeepAlive>
-        )
+        component: HomePage
       },
       {
         path: '/query',
-        component: () => (
-          <KeepAlive name="HomePage">
-            <HomePage />
-          </KeepAlive>
-        )
+        component: HomePage
       },
       {
         path: '/input',
-        component: () => (
-          <KeepAlive name="DataInput">
-            <DataInput />
-          </KeepAlive>
-        )
+        component: DataInput
       }
     ]
   }

@@ -1,16 +1,12 @@
 import React from 'react';
 import './App.css';
-// import MainView from './views/MainView';
-import { HashRouter as Router, Switch } from 'react-router-dom';
-import { Provider } from 'react-keep-alive';
+import { HashRouter as Router } from 'react-router-dom';
 import Routes from './routes';
-import { renderRoutes } from 'react-router-config';
+import { renderRoutes } from './routes/react-router-config' //为了适应cache组件这个renderRouter稍微改了下
 function App() {
   return (
     <Router>
-      <Provider>
-        <Switch>{renderRoutes(Routes)}</Switch>
-      </Provider>
+        {renderRoutes(Routes)}
     </Router>
   );
 }
