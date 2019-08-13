@@ -4,7 +4,8 @@ import logo from '../logo.svg';
 import Header from '../components/header/Header';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { renderRoutes } from 'react-router-config';
+// import { renderRoutes } from 'react-router-config';
+import { renderRoutes } from '../routes/react-router-config'
 import { bindActionCreators } from 'redux'
 import * as tabpanes from '../redux/actions/tabpanes'
 
@@ -55,6 +56,10 @@ class MainView extends Component {
             <Menu.Item key="/query" name='QueryData'>
               <Icon type="area-chart" />
               <span>QueryData</span>
+            </Menu.Item>
+            <Menu.Item key="/Statement" name='Statement'>
+              <Icon type="area-chart" />
+              <span>Statement</span>
             </Menu.Item>
           </Menu>
         </Sider>

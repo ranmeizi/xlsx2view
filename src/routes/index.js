@@ -2,6 +2,7 @@
 import MainView from '../views/MainView';
 import HomePage from '../views/HomePage/HomePage';
 import DataInput from '../views/DataInput/DataInput';
+import TestQuery from "../views/Query/testQuery/TestQuery";
 
 const routes = [
   {
@@ -14,7 +15,7 @@ const routes = [
       },
       {
         path: '/query',
-        component: HomePage
+        component: TestQuery
       },
       {
         path: '/input',

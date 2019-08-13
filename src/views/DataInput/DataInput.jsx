@@ -14,7 +14,8 @@ export default class DataInput extends Component {
       current: 0,
       fileList: [],
       batchNum: '',
-      actionPromise: null
+      actionPromise: null,
+      postFlag: false
     };
   }
   steps = () => [
@@ -76,7 +77,7 @@ export default class DataInput extends Component {
         <h2>To complete the two steps,click Done button to upload file</h2>
       ),
       role: () => {
-        return false;
+        return this.state.postFlag;
       }
     }
   ];
@@ -126,7 +127,9 @@ export default class DataInput extends Component {
     });
 
     API.uploadXLSX(formData).then(res => {
-
+      if (res.data.success) {
+        this.setState({ postFlag: true })
+      }
     })
   };
   render() {
