@@ -9,14 +9,19 @@ function getList({
   startTime,
   endTime,
   pageNum,
-  batchNum: batchNum=null
+  batchs: batchs = []
 }) {
-  let url = '/result/pagedata'
-  let params = { pageSize, startTime, endTime, pageNum, batchNum }
-  return axios.post(url,params)
+  let url = '/result/pagedata';
+  let params = { pageSize, startTime, endTime, pageNum, batchs };
+  return axios.post(url, params);
+}
+function getTestLineS() {
+  let url = '/statistics/teststand';
+  return axios.get(url);
 }
 
 export default {
   uploadXLSX,
-  getList
+  getList,
+  getTestLineS
 };

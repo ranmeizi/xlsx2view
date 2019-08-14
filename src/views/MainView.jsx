@@ -57,7 +57,7 @@ class MainView extends Component {
               <Icon type="area-chart" />
               <span>QueryData</span>
             </Menu.Item>
-            <Menu.Item key="/Statement" name='Statement'>
+            <Menu.Item key="/statement" name='Statement'>
               <Icon type="area-chart" />
               <span>Statement</span>
             </Menu.Item>

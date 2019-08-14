@@ -13,5 +13,14 @@
   }
 }
 
+.shadow-card {
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: #fff
+}
+
 @import './views/MainView.css';
-@import './views/DataInput/DataInput.css'
+@import './views/DataInput/DataInput.css';
+@import './views/Query/Query.css';
+@import './views/Statistics/Statistics.css'
