@@ -15,7 +15,8 @@ class Header extends Component {
     }
   }
   render() {
-    console.log(this.props)
+    console.log('panes')
+    console.log(this.props.rdx_panes)
     return (
       <Row>
         <Col span={1}>{this.props.children}</Col>
@@ -36,8 +37,8 @@ class Header extends Component {
   }
 }
 const mapStateToProps = (state, ownnProps) => ({
-    rdx_panes: state.tabpanes.panes,
-    rdx_activeKey: state.tabpanes.activeKey
+  rdx_panes: state.tabpanes.panes,
+  rdx_activeKey: state.tabpanes.activeKey
 })
 const mapDispatchToProps = dispatch => ({
   removeTabList: bindActionCreators(tabpanes.removeTabList, dispatch),

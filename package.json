@@ -2,13 +2,27 @@
   "name": "xls2view",
   "version": "0.1.0",
   "private": true,
-  "main": "main.js",
+  "build": {
+    "appId": "uuddlrlrbaba.ranmeizi.app",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
   "homepage": ".",
   "dependencies": {
     "antd": "^3.20.7",
     "axios": "^0.19.0",
     "echarts": "^4.2.1",
-    "electron": "^6.0.1",
+    "express": "^4.17.1",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -27,8 +41,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron-start": "electron ."
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
