@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message, Steps, Input, Button } from 'antd';
+import { Upload, Icon, message, Steps, Button, Input } from 'antd';
 import moment from 'moment';
 import API from '../../api/service'
 import { CONFIG } from '../../config'
+import ControlForm from './ControlForm'
 
 const { Step } = Steps;
 const { Dragger } = Upload;
@@ -14,8 +15,8 @@ export default class DataInput extends Component {
       current: 0,
       fileList: [],
       batchNum: '',
-      actionPromise: null,
-      postFlag: false
+      postFlag: false,
+      stepStatus: [false, false, false]
     };
   }
   steps = () => [
@@ -23,43 +24,25 @@ export default class DataInput extends Component {
       title: `First:${
         this.state.fileList.length > 0
           ? this.state.fileList[0].name
-          : 'Select your files'
+          : 'Select your files and add a batch number'
         }`,
-      role: () => {
-        return this.state.fileList.length > 0;
-      },
-      content: (
-        <Dragger {...this.upload_props}>
-          <p className="ant-upload-drag-icon">
-            <Icon type="inbox" />
-          </p>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from
-            uploading company data or other band files
-          </p>
-        </Dragger>
-      )
-    },
-    {
-      title: `Second:${
-        this.state.batchNum ? this.state.batchNum : 'add a batch number'
-        }`,
-      role: () => {
-        return this.state.batchNum;
+        rule: () => {
+        return this.state.fileList.length > 0 && this.state.batchNum;;
       },
       content: (
         <div>
-          <h3>
-            When you import data, you need to set a batch number for this batch
-            of data.
-          </h3>
-          <h3>
-            The batch number defaults to time + file name, which can also be
-            customized, but do not repeat
-          </h3>
+          <Dragger {...this.upload_props}>
+            <p className="ant-upload-drag-icon">
+              <Icon type="inbox" />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag file to this area to upload
+          </p>
+            <p className="ant-upload-hint">
+              Support for a single or bulk upload. Strictly prohibit from
+              uploading company data or other band files
+          </p>
+          </Dragger>
           <Input
             size="large"
             placeholder="Please enter batch numberlarge size"
@@ -72,11 +55,38 @@ export default class DataInput extends Component {
       )
     },
     {
+      title: 'Second:Adding descriptions to the data',
+      rule: () => {
+        if (this.refs.ControlForm) {
+          this.refs.ControlForm.validateFields((err, vals) => {
+            console.log(err)
+            console.log(vals)
+            return !err
+          })
+        }
+        return false
+      },
+      content: (
+        <div>
+          <h3>
+            You have to add descriptions to the data, which are essential for statistics.
+          </h3>
+          <p>
+            Q:Input error data?
+          </p>
+          <p>
+            A:Enter the &lt;BasicData&gt; page, use batch number to delete misleading data, and then re-import
+          </p>
+          <ControlForm ref='ControlForm' />
+        </div>
+      )
+    },
+    {
       title: 'Post Data',
       content: (
         <h2>To complete the two steps,click Done button to upload file</h2>
       ),
-      role: () => {
+      rule: () => {
         return this.state.postFlag;
       }
     }
@@ -103,11 +113,17 @@ export default class DataInput extends Component {
     }
   };
   next() {
+    // 验证
+    let newArr = [...this.state.stepStatus]
+    newArr[this.state.current] = this.steps()[this.state.current].rule() && true
     const current = this.state.current + 1;
     this.setState({ current });
   }
 
   prev() {
+    // 验证
+    let newArr = [...this.state.stepStatus]
+    newArr[this.state.current] = this.steps()[this.state.current].rule() && true
     const current = this.state.current - 1;
     this.setState({ current });
   }
@@ -139,10 +155,10 @@ export default class DataInput extends Component {
       <div className="DataInput">
         <div className="DataInput-inner">
           <Steps current={current}>
-            {steps.map(item => (
+            {steps.map((item, index) => (
               <Step
                 key={item.title}
-                status={item.role() ? 'finish' : 'error'}
+                status={this.state.stepStatus[index] ? 'finish' : 'error'}
                 title={item.title}
               />
             ))}
