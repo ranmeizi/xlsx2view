@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { Col, Row, Input, Select, DatePicker, Form } from 'antd'
 import moment from 'moment'
 
@@ -25,7 +26,7 @@ class ControlForm extends Component {
       attr: {
         onChange: (value) => {
           // 修改weekday的值
-          this.props.form.setFieldsValue({ 'weekday':optList[value.day()]})
+          this.props.form.setFieldsValue({ 'weekday': optList[value.day()] })
           console.log(value)
         }
       },
@@ -129,22 +130,23 @@ class ControlForm extends Component {
       case 'Input': return <Input />
       case 'Select': return <Select>
         {
-          Object.entries(item.optList).map(arr => <Option value={arr[0]}>{arr[1]}</Option>)
+          Object.entries(item.optList).map(arr => <Option value={arr[0]} key={arr[0]}>{arr[1]}</Option>)
         }
       </Select>
-      case 'DatePicker': return <DatePicker {...item.attr}/>
+      case 'DatePicker': return <DatePicker {...item.attr} />
       default: return <Input />
     }
   }
 
   render() {
+    console.log('render')
     const { getFieldDecorator } = this.props.form
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
         {
           this.FieldData.map(item => {
-            return <Form.Item label={item.label}>
-              {getFieldDecorator(item.id, { rules: item.rules, initialValue: item.initialValue })(
+            return <Form.Item label={item.label} key={item.label}>
+              {getFieldDecorator(item.id, { rules: item.rules, initialValue: this.props.initData[item.id] || item.initialValue })(
                 this.renderFieldItem(item)
               )}
             </Form.Item>
@@ -154,4 +156,8 @@ class ControlForm extends Component {
     )
   }
 }
+ControlForm.propTypes = {
+  initData: PropTypes.object
+}
+
 export default Form.create({ name: 'ControlForm' })(ControlForm);

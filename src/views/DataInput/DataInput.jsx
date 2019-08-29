@@ -4,6 +4,8 @@ import moment from 'moment';
 import API from '../../api/service'
 import { CONFIG } from '../../config'
 import ControlForm from './ControlForm'
+import { Promise } from 'q';
+import { rejects } from 'assert';
 
 const { Step } = Steps;
 const { Dragger } = Upload;
@@ -16,22 +18,34 @@ export default class DataInput extends Component {
       fileList: [],
       batchNum: '',
       postFlag: false,
-      stepStatus: [false, false, false]
+      stepStatus: [false, false, false],
+      formData: {}
     };
   }
   steps = () => [
     {
-      title: `First:${
-        this.state.fileList.length > 0
-          ? this.state.fileList[0].name
-          : 'Select your files and add a batch number'
-        }`,
-        rule: () => {
-        return this.state.fileList.length > 0 && this.state.batchNum;;
+      title: `First:Select your files and add a batch number`,
+      rule: async() => {
+        // 验证一下批次号是否重复
+        return API.getAvailableBatchNum({ batch: this.state.batchNum }).then(res => {
+          if (res.data.success) {
+            if (res.data.data.repeat) {
+              // 重复的
+              message.warn(res.data.msg)
+            }
+            else {
+              message.success(res.data.msg)
+            }
+            return this.state.fileList.length > 0 && !res.data.data.repeat
+          }
+        })
+      },
+      msg: () => {
+        message.warn('Please select the file')
       },
       content: (
         <div>
-          <Dragger {...this.upload_props}>
+          <Dragger {...this.upload_props} fileList={this.state.fileList}>
             <p className="ant-upload-drag-icon">
               <Icon type="inbox" />
             </p>
@@ -56,15 +70,21 @@ export default class DataInput extends Component {
     },
     {
       title: 'Second:Adding descriptions to the data',
-      rule: () => {
+      rule: async () => {
         if (this.refs.ControlForm) {
-          this.refs.ControlForm.validateFields((err, vals) => {
-            console.log(err)
-            console.log(vals)
-            return !err
+          let rc = await new Promise((resolve, reject) => {
+            this.refs.ControlForm.validateFields((err, vals) => {
+              if (!err) {
+                this.setState({ formData: vals })
+              }
+              resolve(!err && true)
+            })
           })
+          return rc
         }
-        return false
+      },
+      msg: () => {
+        message.warn('Please add a description')
       },
       content: (
         <div>
@@ -77,7 +97,7 @@ export default class DataInput extends Component {
           <p>
             A:Enter the &lt;BasicData&gt; page, use batch number to delete misleading data, and then re-import
           </p>
-          <ControlForm ref='ControlForm' />
+          <ControlForm ref='ControlForm' initData={this.state.formData} />
         </div>
       )
     },
@@ -112,12 +132,17 @@ export default class DataInput extends Component {
       }
     }
   };
-  next() {
+  next = async () => {
     // 验证
     let newArr = [...this.state.stepStatus]
-    newArr[this.state.current] = this.steps()[this.state.current].rule() && true
+    newArr[this.state.current] = await this.steps()[this.state.current].rule() && true
     const current = this.state.current + 1;
-    this.setState({ current });
+    if (newArr[this.state.current]) {
+      this.setState({ current, stepStatus: newArr });
+    } else {
+      this.steps()[this.state.current].msg()
+    }
+
   }
 
   prev() {
@@ -125,19 +150,21 @@ export default class DataInput extends Component {
     let newArr = [...this.state.stepStatus]
     newArr[this.state.current] = this.steps()[this.state.current].rule() && true
     const current = this.state.current - 1;
-    this.setState({ current });
+    this.setState({ current, stepStatus: newArr });
   }
   submit = () => {
-    // 验证
-    if (!this.state.batchNum) {
-      message.warn('check your batch number')
-      return
-    }
-    if (!this.state.fileList.length > 0) {
-      message.warn('upload a file')
-    }
+    // // 验证
+    // if (!this.state.batchNum) {
+    //   message.warn('check your batch number')
+    //   return
+    // }
+    // if (!this.state.fileList.length > 0) {
+    //   message.warn('upload a file')
+    // }
     const formData = new FormData();
     formData.append('batchNum', this.state.batchNum)
+    // 循环添加batch描述
+    Object.entries(this.state.formData).forEach(kv => formData.append(...kv))
     this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
       formData.append('files', file);
     });
@@ -158,7 +185,6 @@ export default class DataInput extends Component {
             {steps.map((item, index) => (
               <Step
                 key={item.title}
-                status={this.state.stepStatus[index] ? 'finish' : 'error'}
                 title={item.title}
               />
             ))}
@@ -172,7 +198,7 @@ export default class DataInput extends Component {
             )}
             {current === steps.length - 1 && (
               <Button type="primary" onClick={this.submit}>
-                Done
+                Upload
               </Button>
             )}
             {current > 0 && (

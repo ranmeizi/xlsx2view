@@ -11,7 +11,10 @@ const gridStyle = {
 };
 
 class StatementMain extends Component {
-  onClick = ({name,path}) => {
+  onClick = ({ name, path }) => {
+    // 先缓存操作前的panes数组
+    this.props.cachePanes()
+    // panes进行增减操作
     this.props.addTabList({
       key: path,
       title: name,
@@ -38,6 +41,7 @@ const mapStateToProps = (state, ownnProps) => ({
   rdx_activeKey: state.tabpanes.activeKey
 })
 const mapDispatchToProps = dispatch => ({
-  addTabList: bindActionCreators(tabpanes.addTabList, dispatch)
+  addTabList: bindActionCreators(tabpanes.addTabList, dispatch),
+  cachePanes: bindActionCreators(tabpanes.cachePanes, dispatch)
 })
 export default connect(mapStateToProps, mapDispatchToProps)(StatementMain)

@@ -8,10 +8,13 @@ export const removeTabList = (key) => ({
     type: actionType.REMOVE_TAB_LIST,
     key
 })
-export const clearTabList = () => ({
-    type: actionType.CLEAR_TAB_LIST
-})
+// export const clearTabList = () => ({
+//     type: actionType.CLEAR_TAB_LIST
+// })
 export const setActiveKey = (key) => ({
     type: actionType.SET_ACTIVE,
     key
+})
+export const cachePanes = () => ({
+    type: actionType.CACHE_PANES,
 })

@@ -7,16 +7,20 @@ const { TabPane } = Tabs;
 
 class Header extends Component {
   onChange = (activeKey) => {
+    // 先缓存操作前的panes数组
+    this.props.cachePanes()
+    // panes进行增减操作
     this.props.setActiveKey(activeKey)
   }
   onEdit = (targetKey, action) => {
     if (action === 'remove') {
+      // 先缓存操作前的panes数组
+      this.props.cachePanes()
+      // panes进行增减操作
       this.props.removeTabList(targetKey)
     }
   }
   render() {
-    console.log('panes')
-    console.log(this.props.rdx_panes)
     return (
       <Row>
         <Col span={1}>{this.props.children}</Col>
@@ -42,7 +46,7 @@ const mapStateToProps = (state, ownnProps) => ({
 })
 const mapDispatchToProps = dispatch => ({
   removeTabList: bindActionCreators(tabpanes.removeTabList, dispatch),
-  clearTabList: bindActionCreators(tabpanes.clearTabList, dispatch),
-  setActiveKey: bindActionCreators(tabpanes.setActiveKey, dispatch)
+  setActiveKey: bindActionCreators(tabpanes.setActiveKey, dispatch),
+  cachePanes: bindActionCreators(tabpanes.cachePanes, dispatch)
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

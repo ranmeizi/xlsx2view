@@ -4,8 +4,8 @@ import logo from '../logo.svg';
 import Header from '../components/header/Header';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { renderRoutes } from 'react-router-config';
-import { renderRoutes } from '../routes/react-router-config'
+import { renderRoutes } from 'react-router-config';
+// import { renderRoutes } from '../routes/react-router-config'
 import { bindActionCreators } from 'redux'
 import * as tabpanes from '../redux/actions/tabpanes'
 
@@ -19,7 +19,9 @@ class MainView extends Component {
     };
   }
   menuOnchange = ({ item, key }) => {
-    console.log(item)
+    // 先缓存操作前的panes数组
+    this.props.cachePanes()
+    // panes进行增减操作
     this.props.addTabList({
       key: key,
       title: item.props.name,
@@ -82,6 +84,7 @@ const mapStateToProps = (state, ownnProps) => ({
   rdx_activeKey: state.tabpanes.activeKey
 })
 const mapDispatchToProps = dispatch => ({
-  addTabList: bindActionCreators(tabpanes.addTabList, dispatch)
+  addTabList: bindActionCreators(tabpanes.addTabList, dispatch),
+  cachePanes: bindActionCreators(tabpanes.cachePanes, dispatch)
 })
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainView));
