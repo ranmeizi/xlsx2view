@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message, Steps, Button, Input } from 'antd';
+import { Upload, Icon, message, Steps, Button, Input, Modal } from 'antd';
 import moment from 'moment';
 import API from '../../api/service'
 import { CONFIG } from '../../config'
 import ControlForm from './ControlForm'
-import { Promise } from 'q';
-import { rejects } from 'assert';
+
 
 const { Step } = Steps;
 const { Dragger } = Upload;
+const { confirm } = Modal;
 
 export default class DataInput extends Component {
   constructor(props) {
@@ -17,7 +17,6 @@ export default class DataInput extends Component {
       current: 0,
       fileList: [],
       batchNum: '',
-      postFlag: false,
       stepStatus: [false, false, false],
       formData: {}
     };
@@ -25,7 +24,7 @@ export default class DataInput extends Component {
   steps = () => [
     {
       title: `First:Select your files and add a batch number`,
-      rule: async() => {
+      rule: async () => {
         // 验证一下批次号是否重复
         return API.getAvailableBatchNum({ batch: this.state.batchNum }).then(res => {
           if (res.data.success) {
@@ -105,10 +104,7 @@ export default class DataInput extends Component {
       title: 'Post Data',
       content: (
         <h2>To complete the two steps,click Done button to upload file</h2>
-      ),
-      rule: () => {
-        return this.state.postFlag;
-      }
+      )
     }
   ];
   upload_props = {
@@ -153,27 +149,38 @@ export default class DataInput extends Component {
     this.setState({ current, stepStatus: newArr });
   }
   submit = () => {
-    // // 验证
-    // if (!this.state.batchNum) {
-    //   message.warn('check your batch number')
-    //   return
-    // }
-    // if (!this.state.fileList.length > 0) {
-    //   message.warn('upload a file')
-    // }
-    const formData = new FormData();
-    formData.append('batchNum', this.state.batchNum)
-    // 循环添加batch描述
-    Object.entries(this.state.formData).forEach(kv => formData.append(...kv))
-    this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
-      formData.append('files', file);
+    confirm({
+      title: 'Submit',
+      content: 'After confirming that your input is correct, click the button to submit',
+      onOk:()=>{
+        const formData = new FormData();
+        formData.append('batch', this.state.batchNum)
+        // 循环添加batch描述
+        Object.entries(this.state.formData).forEach(kv => formData.append(...kv))
+        this.state.fileList.forEach((file) => {   // fileList 是要上传的文件数组
+          formData.append('files', file);
+        });
+
+        return API.uploadXLSX(formData).then(res => {
+          if (res.data.success) {
+            message.success(res.data.msg)
+           
+          } else {
+            message.warn(res.data.msg)
+          }
+           // 重置
+           this.setState({
+            current: 0,
+            fileList: [],
+            batchNum: '',
+            stepStatus: [false, false, false],
+            formData: {}
+          })
+        })
+      },
+      onCancel() { },
     });
 
-    API.uploadXLSX(formData).then(res => {
-      if (res.data.success) {
-        this.setState({ postFlag: true })
-      }
-    })
   };
   render() {
     const { current } = this.state;

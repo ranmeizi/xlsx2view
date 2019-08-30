@@ -1,5 +1,4 @@
 import * as ActionTypes from '../../constants/tabpanes';
-import { dropByCacheKey, getCachingKeys } from 'react-router-cache-route';
 
 // Tab签的默认值
 const initialPanes = [
@@ -42,7 +41,6 @@ export default function reducer(state = initialState, action) {
       let nextPanes = state.panes.filter(item => item.key !== action.key);
       let activeKey = nextPanes[nextPanes.length - 1].key;
       push(activeKey);
-      dropByCacheKey(action.key);
       return { ...state, panes: nextPanes, activeKey };
     // 清空Tab页
     case ActionTypes.CLEAR_TAB_LIST:

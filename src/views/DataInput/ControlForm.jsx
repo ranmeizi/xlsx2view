@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { Col, Row, Input, Select, DatePicker, Form } from 'antd'
+import { Input, Select, DatePicker, Form } from 'antd'
 import moment from 'moment'
 
 const { Option } = Select
@@ -30,6 +30,9 @@ class ControlForm extends Component {
           console.log(value)
         }
       },
+      rulse: [
+        {transform:(value) => moment(value).format('YYYY-MM-DD HH:mm:ss')}
+      ],
       type: 'DatePicker'
     },
     // 比赛对阵
@@ -76,8 +79,8 @@ class ControlForm extends Component {
       type: 'Input',
     },
     {
-      id: 'group_tickets_revenuen',
-      label: 'Group Tickets Revenuen',
+      id: 'group_tickets_revenue',
+      label: 'Group Tickets Revenue',
       initialValue: '0',
       type: 'Input',
       attr: {
@@ -121,13 +124,16 @@ class ControlForm extends Component {
       id: 'comparable_game_date',
       label: 'Comparable Game Date',
       initialValue: moment(),
-      type: 'DatePicker'
+      type: 'DatePicker',
+      rulse: [
+        {transform:(value) => moment(value).format('YYYY-MM-DD HH:mm:ss')}
+      ],
     }
   ]
 
   renderFieldItem(item) {
     switch (item.type) {
-      case 'Input': return <Input />
+      case 'Input': return <Input {...item.attr} />
       case 'Select': return <Select>
         {
           Object.entries(item.optList).map(arr => <Option value={arr[0]} key={arr[0]}>{arr[1]}</Option>)
