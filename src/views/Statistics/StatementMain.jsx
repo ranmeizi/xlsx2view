@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux'
 import * as tabpanes from '../../redux/actions/tabpanes'
 
 const gridStyle = {
-  height: '300px',
-  width: '33%',
+  height: '250px',
+  width: '25%',
   textAlign: 'center',
 };
 
@@ -26,6 +26,12 @@ class StatementMain extends Component {
       <div>
         <Card title="Card Title" className='StatementMain'>
           <Card.Grid onClick={() => this.onClick({ name:'testLine',path: '/statement/testline' })} style={gridStyle}><img src='/images/linetest.png' /></Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
+          <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
           <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
           <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
           <Card.Grid onClick={() => this.onClick('')} style={gridStyle}>TODO</Card.Grid>
