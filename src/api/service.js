@@ -20,16 +20,24 @@ function getTestLineS() {
   return axios.get(url);
 }
 function getAvailableBatchNum({
-  batch:batch=null //批次号
+  batch: batch = null //批次号
 }) {
   let url = '/input/repeatBatch';
   let params = { batch };
-  return axios.get(url, {params});
+  return axios.get(url, { params });
+}
+function getRptList({
+  current: current = 1 //当前页
+}) {
+  let url = '/statistics/pagedata';
+  let params = { current };
+  return axios.post(url, params);
 }
 
 export default {
   uploadXLSX, //上传excel
   getList, //翻页表格
   getTestLineS, //ceshi
-  getAvailableBatchNum //检查批次号是否重复
+  getAvailableBatchNum, //检查批次号是否重复
+  getRptList //翻页卡片
 };
