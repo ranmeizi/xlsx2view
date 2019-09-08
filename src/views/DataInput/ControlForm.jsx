@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { Input, Select, DatePicker, Form } from 'antd'
+import { Input, Select, DatePicker, Form, Row, Col } from 'antd'
 import moment from 'moment'
 
 const { Option } = Select
@@ -31,7 +31,7 @@ class ControlForm extends Component {
         }
       },
       rulse: [
-        {transform:(value) => moment(value).format('YYYY-MM-DD HH:mm:ss')}
+        { transform: (value) => moment(value).format('YYYY-MM-DD HH:mm:ss') }
       ],
       type: 'DatePicker'
     },
@@ -126,7 +126,7 @@ class ControlForm extends Component {
       initialValue: moment(),
       type: 'DatePicker',
       rulse: [
-        {transform:(value) => moment(value).format('YYYY-MM-DD HH:mm:ss')}
+        { transform: (value) => moment(value).format('YYYY-MM-DD HH:mm:ss') }
       ],
     }
   ]
@@ -148,15 +148,17 @@ class ControlForm extends Component {
     const { getFieldDecorator } = this.props.form
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        {
-          this.FieldData.map(item => {
-            return <Form.Item label={item.label} key={item.label}>
-              {getFieldDecorator(item.id, { rules: item.rules, initialValue: this.props.initData[item.id] || item.initialValue })(
-                this.renderFieldItem(item)
-              )}
-            </Form.Item>
-          })
-        }
+        <Row>
+          {
+            this.FieldData.map(item => {
+              return <Col span={12}><Form.Item label={item.label} key={item.label}>
+                {getFieldDecorator(item.id, { rules: item.rules, initialValue: this.props.initData[item.id] || item.initialValue })(
+                  this.renderFieldItem(item)
+                )}
+              </Form.Item></Col>
+            })
+          }
+        </Row>
       </Form>
     )
   }

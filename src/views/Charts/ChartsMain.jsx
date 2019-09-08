@@ -5,6 +5,7 @@ import * as tabpanes from '../../redux/actions/tabpanes'
 import * as charts from '../../redux/actions/charts'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
+import './ChartsMain.css'
 
 const { Option } = Select;
 const gridStyle = {
@@ -21,11 +22,6 @@ class ChartsMain extends Component {
     }
   }
   onClick = ({ name, path }) => {
-    // 如果是没有batch条件提示，退出
-    if (this.state.batchs.length === 0) {
-      message.warn('Please select at least one match.')
-      return
-    }
     // 把这些batch号存到name名下的数组中
     this.props.set_batch(name, this.state.batchs)
 
@@ -37,6 +33,22 @@ class ChartsMain extends Component {
       title: name,
       closable: true
     })
+  }
+  singleClick = (params) => {
+    // batch只能选一个提示，退出
+    if (this.state.batchs.length !== 1) {
+      message.warn('Please select only one match.')
+      return
+    }
+    this.onClick(params)
+  }
+  multipleClick = (params) => {
+    // 如果是没有batch条件提示，退出
+    if (this.state.batchs.length === 0) {
+      message.warn('Please select only one match.')
+      return
+    }
+    this.onClick(params)
   }
   componentWillMount() {
     this.getAllOfBatchs()
@@ -55,7 +67,7 @@ class ChartsMain extends Component {
   }
   render() {
     return (
-      <div>
+      <div className='ChartsMain'>
         {/* 选择数据 */}
         <div className='shadow-card'>
           Choose a batch
@@ -72,42 +84,46 @@ class ChartsMain extends Component {
           </Select>
         </div>
         {/* 卡片展示 */}
-        <Card title="Dash-Charts" className='StatementMain'>
-          <Card.Grid onClick={() => this.onClick({ name: 'Dash_Financials', path: `/Dash-Financials` })} style={gridStyle}>
-            <img src="./images/linetest.png" alt="" />
-            <h3>Dash_Financials</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Dash_Attendance', path: `/Dash-Attendance` })} style={gridStyle}>
-            <img src="./images/linetest.png" alt="" />
-            <h3>Dash_Attendance</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Dash_TicketTypes', path: `/Dash-TicketTypes` })} style={gridStyle}>
-            <img src="./images/compound.jpg" alt="" />
-            <h3>Dash_TicketTypes</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Dash_PricingTiers', path: `/Dash-PricingTiers` })} style={gridStyle}>
-            <img src="./images/compound.jpg" alt="" />
-            <h3>Dash_PricingTiers</h3>
-          </Card.Grid>
-        </Card>
-        <Card title="Custom-Charts" className='StatementMain'>
-          <Card.Grid onClick={() => this.onClick({ name: 'Sell_ticket', path: `/cust-selticket` })} style={gridStyle}>
-            <img src="./images/pietest.jpg" alt="" />
-            <h3>Sell_ticket</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Income_ticket', path: `/cust-incticket` })} style={gridStyle}>
-            <img src="./images/nestPie.jpg" alt="" />
-            <h3>Income_ticket</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Income_ticket_dataset', path: `/cust-incticketDS` })} style={gridStyle}>
-            <img src="./images/sharedataset.jpg" alt="" />
-            <h3>Income_ticket_dataset</h3>
-          </Card.Grid>
-          <Card.Grid onClick={() => this.onClick({ name: 'Income_Cartesian', path: `/cust-incCartesian` })} style={gridStyle}>
-            <img src="./images/heatmap-cartesian.jpg" alt="" />
-            <h3>Income_Cartesian</h3>
-          </Card.Grid>
-        </Card>
+        <div className='StatementMain shadow-card' style={{ marginTop: '50px' }}>
+          <Card title="Dash-Charts" >
+            <Card.Grid onClick={() => this.multipleClick({ name: 'Dash_Financials', path: `/Dash-Financials` })} style={gridStyle}>
+              <img src="./images/linetest.png" alt="" />
+              <h3>Dash_Financials</h3>
+            </Card.Grid>
+            <Card.Grid onClick={() => this.multipleClick({ name: 'Dash_Attendance', path: `/Dash-Attendance` })} style={gridStyle}>
+              <img src="./images/linetest.png" alt="" />
+              <h3>Dash_Attendance</h3>
+            </Card.Grid>
+            <Card.Grid onClick={() => this.multipleClick({ name: 'Dash_TicketTypes', path: `/Dash-TicketTypes` })} style={gridStyle}>
+              <img src="./images/compound.jpg" alt="" />
+              <h3>Dash_TicketTypes</h3>
+            </Card.Grid>
+            <Card.Grid onClick={() => this.multipleClick({ name: 'Dash_PricingTiers', path: `/Dash-PricingTiers` })} style={gridStyle}>
+              <img src="./images/compound.jpg" alt="" />
+              <h3>Dash_PricingTiers</h3>
+            </Card.Grid>
+          </Card>
+          <Card title="Single field" className='StatementMain'>
+            <Card.Grid onClick={() => this.singleClick({ name: 'Sell_ticket', path: `/cust-selticket` })} style={gridStyle}>
+              <img src="./images/pietest.jpg" alt="" />
+              <h3>Sell_ticket</h3>
+            </Card.Grid>
+            <Card.Grid onClick={() => this.singleClick({ name: 'Income_ticket', path: `/cust-incticket` })} style={gridStyle}>
+              <img src="./images/nestPie.jpg" alt="" />
+              <h3>Income_ticket</h3>
+            </Card.Grid>
+            <Card.Grid onClick={() => this.singleClick({ name: 'Income_ticket_dataset', path: `/cust-incticketDS` })} style={gridStyle}>
+              <img src="./images/sharedataset.jpg" alt="" />
+              <h3>Income_ticket_dataset</h3>
+            </Card.Grid>
+          </Card>
+          <Card title="Multiple fields" className='StatementMain'>
+            <Card.Grid onClick={() => this.multipleClick({ name: 'Income_Cartesian', path: `/cust-incCartesian` })} style={gridStyle}>
+              <img src="./images/heatmap-cartesian.jpg" alt="" />
+              <h3>Income_Cartesian</h3>
+            </Card.Grid>
+          </Card>
+        </div>
       </div>
     )
   }

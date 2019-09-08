@@ -78,7 +78,7 @@ export default class Dash_Financials extends Component {
 
   render() {
     return (
-      <div>
+      <div className='ChartView'>
         <Echarts type='Dash_Financials' mapper={this.mapper}/>
       </div>
     )

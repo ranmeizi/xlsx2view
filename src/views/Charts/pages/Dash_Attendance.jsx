@@ -74,7 +74,7 @@ export default class Dash_Attendance extends Component {
 
   render() {
     return (
-      <div>
+      <div className='ChartView'>
         <Echarts type='Dash_Attendance' mapper={this.mapper}/>
       </div>
     )

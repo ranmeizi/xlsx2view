@@ -1,3 +1,7 @@
-.StatementMain img{
+.StatementMain img {
   height: 200px;
+}
+
+.StatementMain {
+  padding: 25px
 }

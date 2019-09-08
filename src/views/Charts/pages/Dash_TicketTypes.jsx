@@ -286,7 +286,7 @@ export default class Dash_TicketTypes extends Component {
 
   render() {
     return (
-      <div>
+      <div className='ChartView'>
         <div className='flex-row justify-around'>
           <Echarts {...chartStyle} type='Dash_TicketTypes' mapper={this.mapper1} />
           <Echarts {...chartStyle} type='Dash_TicketTypes' mapper={this.mapper2} />

@@ -70,14 +70,14 @@ class MainView extends Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
+          <Header className='header'>
             <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
           </Header>
-          <Content>{renderRoutes(this.props.route.routes)}</Content>
+          <Content className='content'>{renderRoutes(this.props.route.routes)}</Content>
         </Layout>
       </Layout>
     );

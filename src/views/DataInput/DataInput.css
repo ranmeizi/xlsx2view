@@ -1,18 +1,23 @@
 .DataInput {
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  padding: 25px;
 }
 
 .DataInput-inner {
-  width: 80%;
+  position: relative;
+  width: 100%;
+  padding: 50px !important;
   display: flex;
-  height: 60vh;
+  height: 80vh;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .steps-content {
-  height: 40vh;
+  height: 50%;
   text-align: center
 }
+
+.steps-action {}

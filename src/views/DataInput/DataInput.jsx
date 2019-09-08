@@ -43,7 +43,7 @@ export default class DataInput extends Component {
         message.warn('Please select the file')
       },
       content: (
-        <div>
+        <div style={{height:'100%'}}>
           <Dragger {...this.upload_props} fileList={this.state.fileList}>
             <p className="ant-upload-drag-icon">
               <Icon type="inbox" />
@@ -187,7 +187,7 @@ export default class DataInput extends Component {
     const steps = this.steps();
     return (
       <div className="DataInput">
-        <div className="DataInput-inner">
+        <div className="DataInput-inner shadow-card">
           <Steps current={current}>
             {steps.map((item, index) => (
               <Step
