@@ -63,6 +63,10 @@ class MainView extends Component {
               <Icon type="area-chart" />
               <span>Statement</span>
             </Menu.Item>
+            <Menu.Item key="/charts" name='Charts'>
+              <Icon type="area-chart" />
+              <span>Charts</span>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>

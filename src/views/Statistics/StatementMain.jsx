@@ -58,7 +58,7 @@ class StatementMain extends Component {
       <div>
         <Card title="Card Title" className='StatementMain'>
           {
-            rptList.map(item => item ? <Card.Grid onClick={() => this.onClick({ name: item.opposition, path: `/statement/${item.batch}` })} style={gridStyle}>
+            rptList.map(item => item ? <Card.Grid onClick={() => this.onClick({ name: item.opposition, path: `/statement/stat-detail/${item.batch}` })} style={gridStyle}>
               <Row>
                 <Col><h2>{item.opposition}</h2></Col>
                 <Col span={12}>

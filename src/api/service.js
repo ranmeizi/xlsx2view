@@ -33,11 +33,30 @@ function getRptList({
   let params = { current };
   return axios.post(url, params);
 }
+function searchDetail({ batch: batch = null }) {
+  let url = '/statistics/searchDetail';
+  let params = { batch };
+  return axios.post(url, params);
+}
+function getAllOfBatchs() {
+  let url = '/result/batchSelect';
+  let params = {};
+  return axios.get(url, { params });
+}
+// 获取图表数据
+function getChartData({ batchs: batchs = [] }) {
+  let url = '/statistics/getChartData';
+  let params = { batchs };
+  return axios.post(url, params);
+}
 
 export default {
   uploadXLSX, //上传excel
   getList, //翻页表格
+  getAllOfBatchs, //获取batch下拉列表值
   getTestLineS, //ceshi
   getAvailableBatchNum, //检查批次号是否重复
-  getRptList //翻页卡片
+  getRptList, //翻页卡片
+  searchDetail, //查询统计详情
+  getChartData //获取图表数据
 };

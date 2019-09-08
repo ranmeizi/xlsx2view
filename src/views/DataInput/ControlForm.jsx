@@ -145,7 +145,6 @@ class ControlForm extends Component {
   }
 
   render() {
-    console.log('render')
     const { getFieldDecorator } = this.props.form
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>

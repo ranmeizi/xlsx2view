@@ -12,6 +12,23 @@
     transform: rotate(360deg);
   }
 }
+.flex-row{
+  display: flex;
+  flex-direction: row
+}
+.flex-column{
+  display: flex;
+  flex-direction: column
+}
+.justify-center{
+  justify-content: center
+}
+.justify-around{
+  justify-content: space-around
+}
+.align-center{
+  align-items: center
+}
 
 .shadow-card {
   padding: 10px;
