@@ -1,15 +1,65 @@
 import React, { Component } from 'react'
 import Echarts from '../../../components/charts/Echarts'
 
-export default class Sell_ticket extends Component {
-    componentWillMount(){
-        // 获取数据
+const legend1 = [
+    {
+        name: 'Bundle',
+        value: (data) => JSON.parse(data['lr_promotions']).Bundle.sum
+    },
+    {
+        name: 'EB "Full Price"',
+        value: (data) => data.total_tics_income - (JSON.parse(data['lr_promotions']).total.sum)
+    },
+    {
+        name: 'EB Promos',
+        value: (data) => JSON.parse(data['lr_promotions']).total.sum
+    },
+    {
+        name: 'LBL card tics',
+        value: (data) => data.income_lbl_card_tics
+    },
+    {
+        name: 'Other tics',
+        value: (data) => data.income_other_tics
+    },
+    {
+        name: 'Groups',
+        value: (data) => data.income_groups_tickets
+    },
+    {
+        name: 'Total Merch/Food/Extras',
+        value: (data) => data.income_merch_other_none_group_packages
     }
-    mapper(statData) {
-        let data = {}
-        statData.result.forEach(item => {
-            data[item.opposition] = item.total_merch_other_income
-        })
+]
+const legend2 = [
+    {
+        name: 'Season Tics/Comps',
+        value: (data) => data.season_tics_comps
+    },
+    {
+        name: 'Bundle',
+        value: (data) => JSON.parse(data['lr_promotions']).Bundle.count
+    },
+    {
+        name: '"Full" Price',
+        value: (data) => data.tickers_sold - JSON.parse(data['lr_promotions']).total.count
+    },
+    {
+        name: 'Promos',
+        value: (data) => JSON.parse(data['lr_promotions']).total.count
+    },
+    {
+        name: 'Groups Total',
+        value: (data) => data.total_adults_groups + data.tot_child_groups
+    },
+    {
+        name: 'Total Scanned',
+        value: (data) => data.tickets_scanned
+    }
+]
+export default class Sell_ticket extends Component {
+    mapper1(statData) {
+        let data = statData.result[0] || this.props.data
         return {
             title: {},
             tooltip: {
@@ -19,18 +69,55 @@ export default class Sell_ticket extends Component {
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: statData.oppositions
+                data: legend1.map(item => item.name)
             },
             series: [
                 {
-                    name: '访问来源',
+                    name: 'Promotions Statistics',
                     type: 'pie',
-                    radius: '55%',
+                    radius: '70%',
                     center: ['50%', '60%'],
-                    data: statData.oppositions.map(item => {
+                    data: legend1.map(item => {
                         return {
-                            name: item,
-                            value: data[item]
+                            name: item.name,
+                            value: item.value(data)
+                        }
+                    }),
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+    }
+    mapper2(statData) {
+        let data = statData.result[0]
+        console.log(data)
+        return {
+            title: {},
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: legend2.map(item => item.name)
+            },
+            series: [
+                {
+                    name: 'TicketType Statistics',
+                    type: 'pie',
+                    radius: '70%',
+                    center: ['50%', '60%'],
+                    data: legend2.map(item => {
+                        return {
+                            name: item.name,
+                            value: item.value(data)
                         }
                     }),
                     itemStyle: {
@@ -48,8 +135,15 @@ export default class Sell_ticket extends Component {
     render() {
         return (
             <div className='ChartView'>
-                <Echarts type='Sell_ticket' mapper={this.mapper} />
+                <div className='flex-row'>
+                    <Echarts {...chartStyle} type='Sell_ticket' mapper={this.mapper1} />
+                    <Echarts {...chartStyle} type='Sell_ticket' mapper={this.mapper2} />
+                </div>
             </div>
         )
     }
+}
+const chartStyle = {
+    width: 700,
+    height: 400
 }

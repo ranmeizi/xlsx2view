@@ -35,11 +35,14 @@ export default class Echarts extends Component {
   async componentDidMount() {
     this.getData()
 
-
   }
   initChart = () => {
     this.myCharts = echarts.init(this.refs.chart);
     this.myCharts.setOption(this.option, true);
+    // 自定义事件
+    if (this.props.onDataSet) {
+      this.props.onDataSet.bind(this)()
+    }
   }
 
 

@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Descriptions } from 'antd'
 import API from '../../../api/service'
 
+// 单场统计图
+import SellTicket from '../../Charts/pages/Sell_ticket'
+import IncomeTicker from '../../Charts/pages/Income_ticket'
+
 export default class StatisticsDetail extends Component {
   constructor(props) {
     super(props)
@@ -27,13 +31,15 @@ export default class StatisticsDetail extends Component {
     const { statData } = this.state
     return (
       <div>
-        <Descriptions title="User Info" bordered column={6}> 
+        <Descriptions title="User Info" bordered column={6}>
           {
-             Object.entries(statData).map(([key, value]) => {
+            Object.entries(statData).map(([key, value]) => {
               return <Descriptions.Item label={key}>{value}</Descriptions.Item>
             })
           }
         </Descriptions>
+        <SellTicket data={this.state.statData} />
+        <IncomeTicker batchs={[this.props.match.params.batch]} />
       </div>
     )
   }

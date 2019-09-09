@@ -49,6 +49,15 @@ function getChartData({ batchs: batchs = [] }) {
   let params = { batchs };
   return axios.post(url, params);
 }
+// 获取单场分析数据
+function getSingleField({
+  statTable: statTable = '', // 种类
+  batch: batch = '' // 批次号
+}) {
+  let url = '/statistics/getSingleField';
+  let params = { statTable, batch };
+  return axios.post(url, params);
+}
 
 export default {
   uploadXLSX, //上传excel
@@ -58,5 +67,6 @@ export default {
   getAvailableBatchNum, //检查批次号是否重复
   getRptList, //翻页卡片
   searchDetail, //查询统计详情
-  getChartData //获取图表数据
+  getChartData, //获取图表数据
+  getSingleField //获取单场分析数据
 };
