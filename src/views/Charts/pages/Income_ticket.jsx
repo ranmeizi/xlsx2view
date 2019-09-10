@@ -16,7 +16,7 @@ export default class Income_ticket extends Component {
     componentWillMount() {
         // 获取数据
         // 去store中取对应的数组
-        const batchs = getState().charts['Income_ticket'] || this.props.batchs
+        const batchs = getState().charts['Income_ticket'].length ? getState().charts['Income_ticket'] : this.props.batchs
         API.getSingleField({
             statTable: 'Income_ticket',
             batch: batchs[0]

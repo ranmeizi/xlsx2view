@@ -3,16 +3,20 @@ import Echarts from '../../../components/charts/Echarts'
 import moment from 'moment'
 const legend1 = [
   {
-    name: '% Early Bird',
-    value: (data) => (data.early_bird_tics / (data.early_bird_tics + data.advance_tics + data.gameday_tics)).toFixed(2)
+    name: 'Early Bird',
+    value: (data) => data.inc_early_bird
   },
   {
-    name: '% Advance',
-    value: (data) => (data.advance_tics / (data.early_bird_tics + data.advance_tics + data.gameday_tics)).toFixed(2)
+    name: 'Advance',
+    value: (data) => data.inc_advance
   },
   {
-    name: '% Gameday',
-    value: (data) => (data.gameday_tics / (data.early_bird_tics + data.advance_tics + data.gameday_tics)).toFixed(2)
+    name: 'Gameday',
+    value: (data) => data.inc_gameday
+  },
+  {
+    name: 'Other',
+    value: (data) => data.inc_other
   }
 ]
 const legend2 = [
@@ -40,7 +44,13 @@ const legend2 = [
 export default class Income_ticket_dataset extends Component {
 
   mapper(statData) {
-    statData.sort((a, b) => moment(a.game_date) - moment(b.game_date))
+    statData.result.sort((a, b) => moment(a.game_date) - moment(b.game_date))
+    console.log([
+      ['game_date'].concat(statData.result.map(item => moment(item.game_date).format('ll'))),
+      ...legend1.map(item => {
+        return [item.name].concat(statData.result.map(sItem => item.value(sItem)))
+      })
+    ])
     return {
       legend: {},
       tooltip: {
@@ -49,9 +59,9 @@ export default class Income_ticket_dataset extends Component {
       },
       dataset: {
         source: [
-          ['game_date'].concat(statData.map(item => item.opposition)),
+          ['game_date'].concat(statData.result.map(item => moment(item.game_date).format('ll'))),
           ...legend1.map(item => {
-            return ['item.name'].concat(statData.map(sItem=>item.value(sItem)))
+            return [item.name].concat(statData.result.map(sItem => item.value(sItem)))
           })
         ]
       },
@@ -59,20 +69,17 @@ export default class Income_ticket_dataset extends Component {
       yAxis: { gridIndex: 0 },
       grid: { top: '55%' },
       series: [
-        { type: 'line', smooth: true, seriesLayoutBy: 'row' },
-        { type: 'line', smooth: true, seriesLayoutBy: 'row' },
-        { type: 'line', smooth: true, seriesLayoutBy: 'row' },
-        { type: 'line', smooth: true, seriesLayoutBy: 'row' },
+        ...legend1.map(item => ({ type: 'line', smooth: true, seriesLayoutBy: 'row' })),
         {
           type: 'pie',
           id: 'pie',
           radius: '30%',
           center: ['50%', '25%'],
           label: {
-            formatter: '{b}: {@2012} ({d}%)'
+            formatter: '{b}: £{@2012} ({d}%)'
           },
           encode: {
-            itemName: 'product',
+            itemName: 'game_date',
             value: '2012',
             tooltip: '2012'
           }
@@ -83,13 +90,13 @@ export default class Income_ticket_dataset extends Component {
   render() {
     return (
       <div className='ChartView'>
-        <Echarts type='Sell_ticket' mapper={this.mapper} onDataSet={
-          () => {
-            this.myChart.on('updateAxisPointer', (event) => {
+        <Echarts type='Income_ticket_dataset' mapper={this.mapper} onDataSet={
+          (component) => {
+            component.myCharts.on('updateAxisPointer', (event) => {
               var xAxisInfo = event.axesInfo[0];
               if (xAxisInfo) {
                 var dimension = xAxisInfo.value + 1;
-                this.myChart.setOption({
+                component.myCharts.setOption({
                   series: {
                     id: 'pie',
                     label: {

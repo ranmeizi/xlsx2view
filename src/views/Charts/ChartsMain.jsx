@@ -35,7 +35,7 @@ class ChartsMain extends Component {
     })
   }
   datasetClick = ({ name, path }) => {
-    this.props.set_batch(name, this.state.batchs.length ? this.state.allOfBatchs : this.state.batchs)
+    this.props.set_batch(name, this.state.batchs.length ? this.state.batchs : this.state.allOfBatchs.map(item => item.batch))
 
     // 先缓存操作前的panes数组
     this.props.cachePanes()
@@ -129,12 +129,12 @@ class ChartsMain extends Component {
               <h3>Income_ticket_dataset</h3>
             </Card.Grid>
           </Card>
-          <Card title="DataSet" className='StatementMain'>
+          {/* <Card title="DataSet" className='StatementMain'>
             <Card.Grid onClick={() => this.datasetClick({ name: 'Income_Cartesian', path: `/cust-incCartesian` })} style={gridStyle}>
               <img src="./images/heatmap-cartesian.jpg" alt="" />
               <h3>Income_Cartesian</h3>
             </Card.Grid>
-          </Card>
+          </Card> */}
         </div>
       </div>
     )

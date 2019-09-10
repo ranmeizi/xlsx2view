@@ -41,7 +41,7 @@ export default class Echarts extends Component {
     this.myCharts.setOption(this.option, true);
     // 自定义事件
     if (this.props.onDataSet) {
-      this.props.onDataSet.bind(this)()
+      this.props.onDataSet(this)
     }
   }
 

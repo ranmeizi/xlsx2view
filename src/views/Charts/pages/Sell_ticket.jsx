@@ -58,7 +58,7 @@ const legend2 = [
     }
 ]
 export default class Sell_ticket extends Component {
-    mapper1(statData) {
+    mapper1 = (statData) => {
         let data = statData.result[0] || this.props.data
         return {
             title: {},
@@ -94,8 +94,8 @@ export default class Sell_ticket extends Component {
             ]
         };
     }
-    mapper2(statData) {
-        let data = statData.result[0]
+    mapper2 = (statData) => {
+        let data = statData.result[0] || this.props.data
         console.log(data)
         return {
             title: {},

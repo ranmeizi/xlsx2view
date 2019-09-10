@@ -29,6 +29,7 @@ export default class StatisticsDetail extends Component {
   }
   render() {
     const { statData } = this.state
+    console.log(this.props.match.params.batch)
     return (
       <div>
         <Descriptions title="User Info" bordered column={6}>
@@ -38,7 +39,9 @@ export default class StatisticsDetail extends Component {
             })
           }
         </Descriptions>
-        <SellTicket data={this.state.statData} />
+        {
+          statData ? <SellTicket data={statData} /> : null
+        }
         <IncomeTicker batchs={[this.props.match.params.batch]} />
       </div>
     )

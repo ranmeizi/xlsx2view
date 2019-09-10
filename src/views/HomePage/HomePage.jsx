@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Dataset from '../Charts/pages/Income_ticket_dataset'
 
 class HomePage extends Component {
   componentWillMount() {
@@ -15,7 +16,7 @@ class HomePage extends Component {
     console.log('不管用啊');
   }
   render() {
-    return <div>我是一个主页</div>;
+    return <div><Dataset /></div>;
   }
 }
 export default withRouter(HomePage);
