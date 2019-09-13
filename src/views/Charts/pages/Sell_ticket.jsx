@@ -4,7 +4,14 @@ import Echarts from '../../../components/charts/Echarts'
 const legend1 = [
     {
         name: 'Bundle',
-        value: (data) => JSON.parse(data['lr_promotions']).Bundle.sum
+        value: (data) => {
+            try {
+                return JSON.parse(data['lr_promotions']).Bundle.sum
+            } catch (e) {
+                return 0
+            }
+
+        }
     },
     {
         name: 'EB "Full Price"',

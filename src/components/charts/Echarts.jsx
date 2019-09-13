@@ -24,6 +24,7 @@ export default class Echarts extends Component {
     API.getChartData({ batchs }).then(res => {
       if (res.data.success) {
         this.statData = res.data.data
+        console.log(this.statData)
         this.option = this.props.mapper(this.statData)
         this.initChart()
       }
