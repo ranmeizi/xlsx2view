@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import API from '../../../api/service'
 import moment from 'moment'
-import { Table, Row, Col, DatePicker, Select, Button } from 'antd'
+import { Table, Row, Col, DatePicker, Select, Button, Popconfirm, Icon, message } from 'antd'
 
 const { Option } = Select;
 
@@ -56,6 +56,13 @@ export default class TestQuery extends Component {
   componentWillMount() {
     this.getData()
   }
+  delete = () => {
+    API.deleteBatch({ batchs: this.state.params.batchs }).then(res => {
+      if (res.data.success) {
+        message.success('success')
+      }
+    })
+  }
   render() {
     return (
       <div className='TestQuery'>
@@ -78,7 +85,7 @@ export default class TestQuery extends Component {
             Choose a batch
             <Select
               mode="multiple"
-              style={{ width: '100%' }}
+              style={{ width: '100%', overflow: 'hidden' }}
               placeholder="Please select"
               defaultValue={[]}
               onChange={this.handleChange}
@@ -101,6 +108,14 @@ export default class TestQuery extends Component {
               allOfBatchs: []
             }, this.getData)
           }} type="primary" shape="circle" icon="search" /></Col>
+          {/* 删除 */}
+          <Col>
+            <Popconfirm title="The batch you choose will be deleted. Do you want to continue?" okText="Yes" cancelText="No" onConfirm={() => {
+              this.delete()
+            }}>
+              <Icon type="delete" style={{ fontSize: '24px' }} />
+            </Popconfirm>
+          </Col>
         </Row>
         {/* 下面表格 */}
         <Table

@@ -58,6 +58,12 @@ function getSingleField({
   let params = { statTable, batch };
   return axios.post(url, params);
 }
+// 删除batch
+function deleteBatch({ batchs: batchs = [] }) {
+  let url = '/result/deleteBatch';
+  let params = { batchs };
+  return axios.post(url, params);
+}
 
 export default {
   uploadXLSX, //上传excel
@@ -68,5 +74,6 @@ export default {
   getRptList, //翻页卡片
   searchDetail, //查询统计详情
   getChartData, //获取图表数据
-  getSingleField //获取单场分析数据
+  getSingleField, //获取单场分析数据
+  deleteBatch //删除数据
 };

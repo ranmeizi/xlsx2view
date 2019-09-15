@@ -111,12 +111,12 @@ export default class StatisticsDetail extends Component {
                   </Tooltip>}>{
                       <Tooltip title={V}>
                         <div className='bg-item' style={{ backgroundColor: bgType[describe[K].type] }}>
-                          <span>{describe[K].prefix}</span>{V}<span>{describe[K].suffix}</span>
+                          <span>{describe[K].prefix}</span>{describe[K].suffix === '%' ? V * 100 : V}<span>{describe[K].suffix}</span>
                           {/* 以下是对比数据 */}
                           {
                             // 添加动画类
                             this.state.isComparison && comparStatData.detail ? <div className={`comparStatData ${this.state.isComparison ? 'onRight' : ''}`}>
-                              <span>{describe[K].prefix}</span>{comparStatData.detail[K]}<span>{describe[K].suffix}</span>
+                              <span>{describe[K].prefix}</span>{describe[K].suffix === '%' ? comparStatData.detail[K] * 100 : comparStatData.detail[K]}<span>{describe[K].suffix}</span>
                             </div>
                               : null
                           }
@@ -126,7 +126,7 @@ export default class StatisticsDetail extends Component {
                               <div className='flex-row justify-center' style={{ color: V - comparStatData.detail[K] > 0 ? 'red' : 'green' }}>
                                 {/* icon */}
                                 {V - comparStatData.detail[K] > 0 ? <Icon style={{ lineHeight: 'inherit' }} type="rise" /> : <Icon type="fall" style={{ lineHeight: 'inherit' }} />}
-                                <span>{describe[K].prefix}</span>{(V - comparStatData.detail[K]).toFixed(2)}<span>{describe[K].suffix}</span>
+                                <span>{describe[K].prefix}</span>{(describe[K].suffix === '%' ? (V - comparStatData.detail[K]) * 100 : V - comparStatData.detail[K]).toFixed(2)}<span>{describe[K].suffix}</span>
                               </div>
                             </div>
                               : null
