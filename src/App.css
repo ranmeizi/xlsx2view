@@ -12,21 +12,30 @@
     transform: rotate(360deg);
   }
 }
-.flex-row{
+
+.flex-row {
   display: flex;
   flex-direction: row
 }
-.flex-column{
+
+.flex-column {
   display: flex;
   flex-direction: column
 }
-.justify-center{
+
+.justify-center {
   justify-content: center
 }
-.justify-around{
+
+.justify-around {
   justify-content: space-around
 }
-.align-center{
+
+.justify-between {
+  justify-content: space-between
+}
+
+.align-center {
   align-items: center
 }
 

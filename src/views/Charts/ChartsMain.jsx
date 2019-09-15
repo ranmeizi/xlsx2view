@@ -6,6 +6,7 @@ import * as charts from '../../redux/actions/charts'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import './ChartsMain.css'
+import moment from 'moment'
 
 const { Option } = Select;
 const gridStyle = {
@@ -91,7 +92,13 @@ class ChartsMain extends Component {
             onChange={this.handleChange}
           >
             {
-              this.state.allOfBatchs.map(item => <Option key={item.batch}>{item.opposition}</Option>)
+              this.state.allOfBatchs.map(item => <Option key={item.batch}>
+                {/* 左边对阵。右边日期 */}
+                <div className='flex-row justify-between'>
+                  <span>{item.opposition}</span>
+                  <span>{moment(item.game_date).format('ll')}</span>
+                </div>
+              </Option>)
             }
           </Select>
         </div>

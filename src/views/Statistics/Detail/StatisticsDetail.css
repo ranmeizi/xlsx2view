@@ -1,0 +1,60 @@
+.bg-item {
+  width: 177px;
+  height: 53px;
+  line-height: 53px;
+  float: left;
+  position: relative;
+  margin: -16px -74px -17px -24px;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.comparStatData {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  color: darkblue;
+  text-align: center
+}
+
+.onRight {
+  animation-name: showRight;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards
+}
+.onLeft{
+  animation-name: showLeft;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards
+}
+
+@keyframes showRight {
+  from {
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  to {
+    top: 17px;
+    left: 40px;
+    opacity: 1;
+  }
+}
+@keyframes showLeft {
+  from {
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  to {
+    top: 17px;
+    left: -40px;
+    opacity: 1;
+  }
+}
